@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ item.title }}</title>
+</head>
+<body>
+    <h1>{{ item.title }}</h1>
+    <p><strong>Price:</strong> £{{ item.price }}</p>
+    <p><strong>Description:</strong> {{ item.description }}</p>
+    <p><strong>Seller:</strong> {{ item.owner.username }}</p>
+    <p><strong>Created at:</strong> {{ item.created_at }}</p>
+
+    <hr>
+    <h2>Comments</h2>
+
+    {% if comments %}
+        {% for comment in comments %}
+            <div style="margin-bottom: 16px; padding: 8px; border: 1px solid #ccc;">
+                <p><strong>{{ comment.author.username }}</strong> - {{ comment.created_at }}</p>
+                <p>{{ comment.text }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No comments yet.</p>
+    {% endif %}
+
+    <hr>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p id="char-counter">300 characters remaining</p>
+            <button type="submit" id="comment-submit">Post Comment</button>
+        </form>
+    {% else %}
+        <p>You must be logged in to post a comment.</p>
+    {% endif %}
+
+    <script>
+    const textarea = document.querySelector("textarea");
+    const counter = document.getElementById("char-counter");
+    const submitButton = document.getElementById("comment-submit");
+
+    if (textarea && counter && submitButton) {
+        function updateCounter() {
+            const remaining = 300 - textarea.value.length;
+            counter.textContent = remaining + " characters remaining";
+
+            if (remaining < 0 || textarea.value.trim().length === 0) {
+                submitButton.disabled = true;
+                counter.style.color = "red";
+            } else {
+                submitButton.disabled = false;
+                counter.style.color = "gray";
+            }
+        }
+
+        textarea.addEventListener("input", updateCounter);
+        updateCounter();
+    }
+    </script>
+</body>
+</html>
