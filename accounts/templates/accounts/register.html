@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Register | UniTrade{% endblock %}
+
+{% block content %}
+  <h1>Create an account</h1>
+  <p class="muted">Register to post and manage second-hand items.</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Create account</button>
+  </form>
+
+  <p style="margin-top: 18px;">
+    Already have an account?
+    <a href="{% url 'login' %}">Login</a>
+  </p>
+{% endblock %}
