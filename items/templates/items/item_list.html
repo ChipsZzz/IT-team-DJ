@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Items</title>
+</head>
+<body>
+    <h1>Items</h1>
+
+    <a href="{% url 'item_create' %}">Create Item</a>
+
+    <form method="get">
+        <label for="category">Category:</label>
+        <select name="category" id="category">
+            <option value="">All</option>
+            {% for category in categories %}
+                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <hr>
+
+    {% for item in items %}
+        <div>
+            <h3><a href="{% url 'item_detail' item.id %}">{{ item.title }}</a></h3>
+            <p>£{{ item.price }}</p>
+            <p>{{ item.category.name }}</p>
+            <p>{{ item.owner.username }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>No items found.</p>
+    {% endfor %}
+</body>
+</html>

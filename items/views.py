@@ -1,6 +1,40 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Item
+from django.contrib.auth.decorators import login_required
+
+from .models import Item, Category
+from .forms import ItemForm
 from comments.forms import CommentForm
+
+
+def item_list(request):
+    items = Item.objects.select_related("category", "owner").all().order_by("-created_at")
+    categories = Category.objects.all().order_by("name")
+
+    selected_category = request.GET.get("category")
+    if selected_category:
+        items = items.filter(category__name=selected_category)
+
+    return render(request, "items/item_list.html", {
+        "items": items,
+        "categories": categories,
+        "selected_category": selected_category,
+    })
+
+
+@login_required
+def item_create(request):
+    if request.method == "POST":
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.owner = request.user
+            item.save()
+            return redirect("item_list")
+    else:
+        form = ItemForm()
+
+    return render(request, "items/item_form.html", {"form": form})
+
 
 def item_detail(request, item_id):
     item = get_object_or_404(Item, id=item_id)
