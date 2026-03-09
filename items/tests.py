@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from .models import Item
+from .models import Item, Category
 from comments.models import Comment
 
 
@@ -14,8 +14,13 @@ class ItemCommentTest(TestCase):
             password="12345"
         )
 
+        self.category = Category.objects.create(
+            name="Electronics"
+        )
+
         self.item = Item.objects.create(
             owner=self.user,
+            category=self.category,
             title="Test Item",
             description="Test description",
             price=10
@@ -24,6 +29,7 @@ class ItemCommentTest(TestCase):
     def test_item_creation(self):
         self.assertEqual(self.item.title, "Test Item")
         self.assertEqual(self.item.owner.username, "testuser")
+        self.assertEqual(self.item.category.name, "Electronics")
 
     def test_comment_creation(self):
         comment = Comment.objects.create(
