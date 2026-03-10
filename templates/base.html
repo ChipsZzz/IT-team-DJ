@@ -1,173 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}UniTrade{% endblock %}</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #222;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniTrade</title>
 
-    .navbar {
-      background: white;
-      border-bottom: 1px solid #ddd;
-      padding: 16px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .navbar a {
-      text-decoration: none;
-      color: #2c5cc5;
-      margin-right: 14px;
-      font-weight: 500;
-    }
-
-    .navbar a:last-child {
-      margin-right: 0;
-    }
-
-    .brand {
-      font-size: 22px;
-      font-weight: bold;
-      color: #111;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: white;
-      padding: 32px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 32px;
-    }
-
-    .muted {
-      color: #666;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #2c5cc5;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .btn-secondary {
-      background: #eef2ff;
-      color: #2c5cc5;
-    }
-
-    form p {
-      margin-bottom: 14px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-
-    .top-links {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logout-form {
-      display: inline;
-      margin: 0;
-    }
-
-    .logout-btn {
-      background: none;
-      border: none;
-      color: #2c5cc5;
-      cursor: pointer;
-      font: inherit;
-      padding: 0;
-    }
-
-    .messages {
-      margin-bottom: 20px;
-    }
-
-    .message {
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    .message-success {
-      background: #eafaf1;
-      color: #1f7a4c;
-      border: 1px solid #bfe8cf;
-    }
-
-    .message-error {
-      background: #fff1f0;
-      color: #b42318;
-      border: 1px solid #f5c2c0;
-    }
-
-    .message-info {
-      background: #eef4ff;
-      color: #2c5cc5;
-      border: 1px solid #c9d8ff;
-    }
-  </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <nav class="navbar">
-    <div>
-      <a href="/" class="brand">UniTrade</a>
+<body style="background-color: #f3f4f8;">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container-fluid">
+            <a class="navbar-brand text-primary fw-semibold" href="/">UniTrade</a>
+
+            <div class="navbar-nav me-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/items/">Items</a>
+                {% if user.is_authenticated %}
+                    <a class="nav-link" href="/items/create/">Create Item</a>
+                {% endif %}
+            </div>
+
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <span class="nav-link">Hi, {{ user.username }}</span>
+                    <form method="post" action="/accounts/logout/" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link d-inline p-0 ms-2" style="text-decoration: none;">
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a class="nav-link" href="/accounts/login/">Login</a>
+                    <a class="nav-link" href="/accounts/register/">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
     </div>
 
-    <div class="top-links">
-      {% if user.is_authenticated %}
-        <span class="muted">Hi, {{ user.username }}</span>
-        <form method="post" action="{% url 'logout' %}" class="logout-form">
-          {% csrf_token %}
-          <button type="submit" class="logout-btn">Logout</button>
-        </form>
-      {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-      {% endif %}
-    </div>
-  </nav>
-
-  <div class="container">
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <div class="message {% if message.tags == 'success' %}message-success{% elif message.tags == 'error' %}message-error{% else %}message-info{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {% block content %}{% endblock %}
-  </div>
 </body>
 </html>
