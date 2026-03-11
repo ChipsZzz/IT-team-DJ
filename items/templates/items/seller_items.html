@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3 class="mb-4">
+
+{{ seller.username }}'s Items
+
+</h3>
+
+<div class="row">
+
+{% for item in items %}
+
+<div class="col-md-4 mb-4">
+
+<div onclick="location.href='/items/{{ item.id }}/'"
+class="card card-hover">
+
+{% if item.image %}
+
+<img src="{{ item.image.url }}"
+class="card-img-top"
+style="height:200px;object-fit:cover">
+
+{% endif %}
+
+<div class="card-body">
+
+<h5>{{ item.title }}</h5>
+
+<p class="text-success fw-bold">
+£{{ item.price }}
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

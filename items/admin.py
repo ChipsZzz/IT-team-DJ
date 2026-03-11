@@ -1,14 +1,25 @@
 from django.contrib import admin
-from .models import Category, Item
-
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["id", "name"]
+from .models import Item
 
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "price", "category", "owner", "status", "created_at"]
-    list_filter = ["category", "status", "created_at"]
-    search_fields = ["title", "description"]
+
+    list_display = (
+        "title",
+        "price",
+        "category",
+        "status",
+        "owner",
+        "created_at"
+    )
+
+    list_filter = (
+        "category",
+        "status"
+    )
+
+    search_fields = (
+        "title",
+        "description"
+    )

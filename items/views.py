@@ -1,62 +1,128 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 
-from .models import Item, Category
+from .models import Item
+from comments.models import Comment
 from .forms import ItemForm
-from comments.forms import CommentForm
+
+
+def home(request):
+    latest_items = Item.objects.order_by("-created_at")[:6]
+
+    return render(request, "home.html", {
+        "latest_items": latest_items
+    })
 
 
 def item_list(request):
-    items = Item.objects.select_related("category", "owner").all().order_by("-created_at")
-    categories = Category.objects.all().order_by("name")
 
-    selected_category = request.GET.get("category")
-    if selected_category:
-        items = items.filter(category__name=selected_category)
+    query = request.GET.get("q", "")
+
+    items = Item.objects.all().order_by("-created_at")
+
+    if query:
+        items = items.filter(title__icontains=query)
 
     return render(request, "items/item_list.html", {
         "items": items,
-        "categories": categories,
-        "selected_category": selected_category,
+        "query": query
+    })
+
+
+def item_detail(request, id):
+
+    item = get_object_or_404(Item, id=id)
+
+    if request.method == "POST" and request.user.is_authenticated:
+
+        text = request.POST.get("text")
+
+        if text:
+            Comment.objects.create(
+                item=item,
+                author=request.user,
+                text=text
+            )
+
+        return redirect("item_detail", id=item.id)
+
+    comments = item.comments.all().order_by("-created_at")
+
+    return render(request, "items/item_detail.html", {
+        "item": item,
+        "comments": comments
     })
 
 
 @login_required
 def item_create(request):
+
     if request.method == "POST":
+
         form = ItemForm(request.POST, request.FILES)
+
         if form.is_valid():
             item = form.save(commit=False)
             item.owner = request.user
             item.save()
+
             return redirect("item_list")
+
     else:
         form = ItemForm()
 
-    return render(request, "items/item_form.html", {"form": form})
+    return render(request, "items/item_form.html", {
+        "form": form
+    })
 
 
-def item_detail(request, item_id):
-    item = get_object_or_404(Item, id=item_id)
+@login_required
+def my_items(request):
 
-    if request.method == "POST":
-        if not request.user.is_authenticated:
-            return redirect(f"/admin/login/?next=/items/{item_id}/")
+    items = Item.objects.filter(owner=request.user)
 
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.item = item
-            comment.author = request.user
-            comment.save()
-            return redirect("item_detail", item_id=item.id)
+    return render(request, "items/my_items.html", {
+        "items": items
+    })
+
+
+def seller_items(request, username):
+
+    seller = get_object_or_404(User, username=username)
+
+    items = Item.objects.filter(owner=seller)
+
+    return render(request, "items/seller_items.html", {
+        "seller": seller,
+        "items": items
+    })
+
+
+@login_required
+def toggle_favourite(request, id):
+
+    item = get_object_or_404(Item, id=id)
+
+    if request.user in item.favourites.all():
+        item.favourites.remove(request.user)
+        favourited = False
     else:
-        form = CommentForm()
+        item.favourites.add(request.user)
+        favourited = True
 
-    comments = item.comments.all()
+    return JsonResponse({
+        "favourited": favourited,
+        "count": item.favourites.count()
+    })
 
-    return render(request, "items/item_detail.html", {
-        "item": item,
-        "comments": comments,
-        "form": form,
+
+@login_required
+def favourite_items(request):
+
+    items = request.user.favourite_items.all()
+
+    return render(request, "items/favourites.html", {
+        "items": items
     })

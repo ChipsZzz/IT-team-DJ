@@ -1,13 +1,136 @@
 {% extends "base.html" %}
 
-{% block title %}Home | UniTrade{% endblock %}
-
 {% block content %}
-  <h1>UniTrade Home</h1>
 
-  {% if user.is_authenticated %}
-    <p>You are logged in.</p>
-  {% else %}
-    <p>You are not logged in.</p>
-  {% endif %}
+<!-- HERO SEARCH -->
+
+<div class="text-center mb-5">
+
+<h1 class="mb-3">
+
+Welcome to UniTrade
+
+</h1>
+
+<p class="text-muted">
+
+Buy and sell second-hand items at university
+
+</p>
+
+<div class="row justify-content-center mt-4">
+
+<div class="col-md-6">
+
+<form action="/items/" method="get">
+
+<input
+type="text"
+name="q"
+class="form-control form-control-lg"
+placeholder="Search marketplace..."
+>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- POPULAR ITEMS -->
+
+<h3 class="mb-3">
+
+🔥 Popular Items
+
+</h3>
+
+<div class="row mb-5">
+
+{% for item in latest_items %}
+
+<div class="col-md-4 mb-4">
+
+<div
+onclick="location.href='/items/{{ item.id }}/'"
+class="card shadow-sm card-hover"
+>
+
+{% if item.image %}
+
+<img
+src="{{ item.image.url }}"
+class="card-img-top"
+style="height:200px; object-fit:cover"
+>
+
+{% else %}
+
+<div
+class="bg-light d-flex justify-content-center align-items-center"
+style="height:200px"
+>
+
+<span class="text-muted">
+
+No Image
+
+</span>
+
+</div>
+
+{% endif %}
+
+<div class="card-body">
+
+<h5>
+
+{{ item.title }}
+
+</h5>
+
+<p class="mb-1">
+
+£{{ item.price }}
+
+</p>
+
+<p class="small text-muted">
+
+Seller:
+{{ item.owner.username }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+
+<!-- BROWSE MARKETPLACE -->
+
+<div class="text-center mt-5">
+
+<a
+href="/items/"
+class="btn btn-primary btn-lg"
+>
+
+Browse Marketplace
+
+</a>
+
+</div>
+
 {% endblock %}

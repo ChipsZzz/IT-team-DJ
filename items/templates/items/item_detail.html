@@ -1,63 +1,283 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ item.title }}</title>
-</head>
-<body>
-    <h1>{{ item.title }}</h1>
-    <p><strong>Price:</strong> £{{ item.price }}</p>
-    <p><strong>Description:</strong> {{ item.description }}</p>
-    <p><strong>Seller:</strong> {{ item.owner.username }}</p>
-    <p><strong>Created at:</strong> {{ item.created_at }}</p>
+{% extends "base.html" %}
 
-    <hr>
-    <h2>Comments</h2>
+{% block content %}
 
-    {% if comments %}
-        {% for comment in comments %}
-            <div style="margin-bottom: 16px; padding: 8px; border: 1px solid #ccc;">
-                <p><strong>{{ comment.author.username }}</strong> - {{ comment.created_at }}</p>
-                <p>{{ comment.text }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No comments yet.</p>
-    {% endif %}
+<div class="card shadow-sm p-4 mb-4">
 
-    <hr>
-    {% if user.is_authenticated %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <p id="char-counter">300 characters remaining</p>
-            <button type="submit" id="comment-submit">Post Comment</button>
-        </form>
-    {% else %}
-        <p>You must be logged in to post a comment.</p>
-    {% endif %}
+<h2 class="mb-3">
+{{ item.title }}
+</h2>
 
-    <script>
-    const textarea = document.querySelector("textarea");
-    const counter = document.getElementById("char-counter");
-    const submitButton = document.getElementById("comment-submit");
+<h4 class="text-primary mb-3">
+£{{ item.price }}
+</h4>
 
-    if (textarea && counter && submitButton) {
-        function updateCounter() {
-            const remaining = 300 - textarea.value.length;
-            counter.textContent = remaining + " characters remaining";
+<p class="text-muted small">
+Seller:
+<a href="/items/seller/{{ item.owner.username }}/">
+{{ item.owner.username }}
+</a>
+</p>
 
-            if (remaining < 0 || textarea.value.trim().length === 0) {
-                submitButton.disabled = true;
-                counter.style.color = "red";
-            } else {
-                submitButton.disabled = false;
-                counter.style.color = "gray";
-            }
-        }
+<p class="text-muted small">
+Created:
+{{ item.created_at }}
+</p>
 
-        textarea.addEventListener("input", updateCounter);
-        updateCounter();
-    }
-    </script>
-</body>
-</html>
+
+{% if item.image %}
+
+<img
+src="{{ item.image.url }}"
+class="img-fluid rounded mb-3"
+style="max-height:350px;object-fit:cover"
+>
+
+{% endif %}
+
+
+<p class="mt-3">
+{{ item.description }}
+</p>
+
+
+{% if user.is_authenticated %}
+
+<button
+id="favButton"
+class="btn btn-outline-danger mb-3"
+>
+
+{% if user in item.favourites.all %}
+
+❤️ Remove Favourite
+
+{% else %}
+
+♥ Add to Favourite
+
+{% endif %}
+
+</button>
+
+{% endif %}
+
+
+<p class="text-muted small">
+
+❤️ <span id="favCount">
+
+{{ item.favourites.count }}
+
+</span> users favourited this item
+
+</p>
+
+</div>
+
+
+
+<div class="card shadow-sm p-4">
+
+<h4>Comments</h4>
+
+<hr>
+
+
+{% if comments %}
+
+{% for comment in comments %}
+
+<div class="mb-3">
+
+<strong>
+
+{{ comment.author.username }}
+
+</strong>
+
+<span class="text-muted small">
+
+- {{ comment.created_at }}
+
+</span>
+
+<p class="mb-0">
+
+{{ comment.text }}
+
+</p>
+
+</div>
+
+<hr>
+
+{% endfor %}
+
+{% else %}
+
+<p>No comments yet.</p>
+
+{% endif %}
+
+
+
+{% if user.is_authenticated %}
+
+<form method="post">
+
+{% csrf_token %}
+
+<div class="mb-2">
+
+<textarea
+name="text"
+id="commentText"
+class="form-control"
+rows="3"
+maxlength="300"
+placeholder="Write your comment here..."
+></textarea>
+
+</div>
+
+<p class="text-danger small">
+
+<span id="charCount">
+
+300 characters remaining
+
+</span>
+
+</p>
+
+<button type="submit" class="btn btn-primary">
+
+Post Comment
+
+</button>
+
+</form>
+
+{% else %}
+
+<p>
+
+Please
+<a href="/accounts/login/">
+
+login
+
+</a>
+
+to comment.
+
+</p>
+
+{% endif %}
+
+</div>
+
+
+
+<a href="/items/" class="btn btn-outline-secondary mt-3">
+
+Back to Items
+
+</a>
+
+
+
+{% if user == item.owner %}
+
+<div class="mt-3">
+
+<a
+href="/items/{{ item.id }}/edit/"
+class="btn btn-warning me-2"
+>
+
+Edit
+
+</a>
+
+<a
+href="/items/{{ item.id }}/delete/"
+class="btn btn-danger"
+>
+
+Delete
+
+</a>
+
+</div>
+
+{% endif %}
+
+
+
+<script>
+
+const textarea = document.getElementById("commentText");
+const counter = document.getElementById("charCount");
+
+if(textarea){
+
+textarea.addEventListener("input", function(){
+
+let remaining = 300 - textarea.value.length;
+
+counter.innerText = remaining + " characters remaining";
+
+});
+
+}
+
+
+
+const favButton = document.getElementById("favButton");
+const favCount = document.getElementById("favCount");
+
+if(favButton){
+
+favButton.addEventListener("click", function(){
+
+fetch("/items/{{ item.id }}/favourite/",{
+
+method:"POST",
+
+headers:{
+"X-CSRFToken":"{{ csrf_token }}",
+"Content-Type":"application/json"
+}
+
+})
+
+.then(response => response.json())
+
+.then(data => {
+
+favCount.innerText = data.count;
+
+if(data.favourited){
+
+favButton.innerText = "❤️ Remove Favourite";
+
+}
+
+else{
+
+favButton.innerText = "♥ Add to Favourite";
+
+}
+
+});
+
+});
+
+}
+
+</script>
+
+
+{% endblock %}

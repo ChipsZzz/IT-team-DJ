@@ -1,38 +1,259 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Items</title>
-</head>
-<body>
-    <h1>Items</h1>
+{% extends "base.html" %}
 
-    <a href="{% url 'item_create' %}">Create Item</a>
+{% block content %}
 
-    <form method="get">
-        <label for="category">Category:</label>
-        <select name="category" id="category">
-            <option value="">All</option>
-            {% for category in categories %}
-                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
-                    {{ category.name }}
-                </option>
-            {% endfor %}
-        </select>
-        <button type="submit">Filter</button>
-    </form>
+<style>
 
-    <hr>
+.card-hover{
+transition: transform 0.2s, box-shadow 0.2s;
+}
 
-    {% for item in items %}
-        <div>
-            <h3><a href="{% url 'item_detail' item.id %}">{{ item.title }}</a></h3>
-            <p>£{{ item.price }}</p>
-            <p>{{ item.category.name }}</p>
-            <p>{{ item.owner.username }}</p>
-        </div>
-        <hr>
-    {% empty %}
-        <p>No items found.</p>
-    {% endfor %}
-</body>
-</html>
+.card-hover:hover{
+transform: translateY(-6px);
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+cursor:pointer;
+}
+
+</style>
+
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="fw-semibold">
+
+🛒 Marketplace
+
+</h2>
+
+<a href="/items/create/" class="btn btn-primary">
+
+Sell Item
+
+</a>
+
+</div>
+
+
+
+<div class="row mb-4">
+
+<div class="col-md-6">
+
+<input
+type="text"
+id="searchInput"
+class="form-control"
+placeholder="Search items..."
+value="{{ query }}"
+>
+
+</div>
+
+<div class="col-md-3">
+
+<select id="sortSelect" class="form-select">
+
+<option value="">Newest</option>
+
+<option value="price_low">
+
+Price Low → High
+
+</option>
+
+<option value="price_high">
+
+Price High → Low
+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<div id="itemsContainer" class="row">
+
+{% for item in items %}
+
+<div
+class="col-md-4 mb-4 item-card"
+data-title="{{ item.title|lower }}"
+data-price="{{ item.price }}"
+>
+
+<div
+onclick="location.href='/items/{{ item.id }}/'"
+class="card shadow-sm card-hover"
+>
+
+{% if item.image %}
+
+<img
+src="{{ item.image.url }}"
+loading="lazy"
+class="card-img-top"
+style="height:200px;object-fit:cover"
+>
+
+{% else %}
+
+<div
+class="bg-light d-flex justify-content-center align-items-center"
+style="height:200px"
+>
+
+<span class="text-muted">
+
+No Image
+
+</span>
+
+</div>
+
+{% endif %}
+
+
+<div class="card-body">
+
+<h5>
+
+{{ item.title }}
+
+</h5>
+
+<p class="mb-1">
+
+£{{ item.price }}
+
+</p>
+
+<p class="text-muted small">
+
+Seller:
+
+<a href="/items/seller/{{ item.owner.username }}/">
+
+{{ item.owner.username }}
+
+</a>
+
+</p>
+
+<p class="text-muted small">
+
+❤️ {{ item.favourites.count }} favourites
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+
+<div class="mt-4">
+
+{% if items.has_previous %}
+
+<a
+href="?page={{ items.previous_page_number }}"
+class="btn btn-outline-secondary"
+>
+
+Previous
+
+</a>
+
+{% endif %}
+
+{% if items.has_next %}
+
+<a
+href="?page={{ items.next_page_number }}"
+class="btn btn-outline-secondary"
+>
+
+Next
+
+</a>
+
+{% endif %}
+
+</div>
+
+
+
+<script>
+
+const searchInput = document.getElementById("searchInput");
+const items = document.querySelectorAll(".item-card");
+const sortSelect = document.getElementById("sortSelect");
+const container = document.getElementById("itemsContainer");
+
+
+/* 自动聚焦搜索框 */
+
+searchInput.focus();
+
+
+
+searchInput.addEventListener("input", function(){
+
+const q = searchInput.value.toLowerCase();
+
+items.forEach(function(item){
+
+const title = item.dataset.title;
+
+if(title.includes(q)){
+
+item.style.display = "block";
+
+}
+
+else{
+
+item.style.display = "none";
+
+}
+
+});
+
+});
+
+
+
+sortSelect.addEventListener("change", function(){
+
+let itemsArray = Array.from(items);
+
+if(this.value === "price_low"){
+
+itemsArray.sort((a,b)=>a.dataset.price - b.dataset.price);
+
+}
+
+if(this.value === "price_high"){
+
+itemsArray.sort((a,b)=>b.dataset.price - a.dataset.price);
+
+}
+
+itemsArray.forEach(item => container.appendChild(item));
+
+});
+
+</script>
+
+
+{% endblock %}
