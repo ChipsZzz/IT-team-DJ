@@ -116,6 +116,78 @@ Seller:
 
 </div>
 
+<h3 class="mb-3 mt-5">
+
+⭐ Trending Items
+
+</h3>
+
+<div class="row mb-5">
+
+{% for item in popular_items %}
+
+<div class="col-md-4 mb-4">
+
+<div
+onclick="location.href='/items/{{ item.id }}/'"
+class="card shadow-sm card-hover"
+>
+
+{% if item.image %}
+
+<img
+src="{{ item.image.url }}"
+class="card-img-top"
+style="height:200px; object-fit:cover"
+>
+
+{% else %}
+
+<div
+class="bg-light d-flex justify-content-center align-items-center"
+style="height:200px"
+>
+
+<span class="text-muted">
+
+No Image
+
+</span>
+
+</div>
+
+{% endif %}
+
+<div class="card-body">
+
+<h5>
+
+{{ item.title }}
+
+</h5>
+
+<p class="mb-1">
+
+£{{ item.price }}
+
+</p>
+
+<p class="small text-muted">
+
+Seller:
+{{ item.owner.username }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
 
 
 <!-- BROWSE MARKETPLACE -->

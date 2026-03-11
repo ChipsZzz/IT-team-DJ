@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.db.models import Count
 
 from .models import Item
 from comments.models import Comment
@@ -9,10 +10,16 @@ from .forms import ItemForm
 
 
 def home(request):
+
     latest_items = Item.objects.order_by("-created_at")[:6]
 
+    popular_items = Item.objects.annotate(
+        fav_count=Count("favourites")
+    ).order_by("-fav_count")[:6]
+
     return render(request, "home.html", {
-        "latest_items": latest_items
+        "latest_items": latest_items,
+        "popular_items": popular_items
     })
 
 

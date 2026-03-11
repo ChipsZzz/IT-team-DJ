@@ -47,30 +47,21 @@ style="max-height:350px;object-fit:cover"
 id="favButton"
 class="btn btn-outline-danger mb-3"
 >
-
 {% if user in item.favourites.all %}
-
 ❤️ Remove Favourite
-
 {% else %}
-
 ♥ Add to Favourite
-
 {% endif %}
-
 </button>
 
 {% endif %}
 
 
 <p class="text-muted small">
-
 ❤️ <span id="favCount">
-
 {{ item.favourites.count }}
-
-</span> users favourited this item
-
+</span>
+users favourited this item
 </p>
 
 </div>
@@ -91,21 +82,15 @@ class="btn btn-outline-danger mb-3"
 <div class="mb-3">
 
 <strong>
-
 {{ comment.author.username }}
-
 </strong>
 
 <span class="text-muted small">
-
 - {{ comment.created_at }}
-
 </span>
 
 <p class="mb-0">
-
 {{ comment.text }}
-
 </p>
 
 </div>
@@ -144,17 +129,13 @@ placeholder="Write your comment here..."
 <p class="text-danger small">
 
 <span id="charCount">
-
 300 characters remaining
-
 </span>
 
 </p>
 
 <button type="submit" class="btn btn-primary">
-
 Post Comment
-
 </button>
 
 </form>
@@ -162,16 +143,11 @@ Post Comment
 {% else %}
 
 <p>
-
 Please
 <a href="/accounts/login/">
-
 login
-
 </a>
-
 to comment.
-
 </p>
 
 {% endif %}
@@ -181,9 +157,7 @@ to comment.
 
 
 <a href="/items/" class="btn btn-outline-secondary mt-3">
-
 Back to Items
-
 </a>
 
 
@@ -196,18 +170,14 @@ Back to Items
 href="/items/{{ item.id }}/edit/"
 class="btn btn-warning me-2"
 >
-
 Edit
-
 </a>
 
 <a
 href="/items/{{ item.id }}/delete/"
 class="btn btn-danger"
 >
-
 Delete
-
 </a>
 
 </div>
@@ -218,6 +188,10 @@ Delete
 
 <script>
 
+/* ---------------------------
+COMMENT CHARACTER COUNTER
+--------------------------- */
+
 const textarea = document.getElementById("commentText");
 const counter = document.getElementById("charCount");
 
@@ -226,12 +200,47 @@ if(textarea){
 textarea.addEventListener("input", function(){
 
 let remaining = 300 - textarea.value.length;
-
 counter.innerText = remaining + " characters remaining";
 
 });
 
 }
+
+
+
+/* ---------------------------
+AJAX FAVOURITE BUTTON
+--------------------------- */
+
+function getCookie(name) {
+
+let cookieValue = null;
+
+if (document.cookie && document.cookie !== "") {
+
+const cookies = document.cookie.split(";");
+
+for (let i = 0; i < cookies.length; i++) {
+
+const cookie = cookies[i].trim();
+
+if (cookie.substring(0, name.length + 1) === (name + "=")) {
+
+cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+
+break;
+
+}
+
+}
+
+}
+
+return cookieValue;
+
+}
+
+const csrftoken = getCookie("csrftoken");
 
 
 
@@ -247,7 +256,7 @@ fetch("/items/{{ item.id }}/favourite/",{
 method:"POST",
 
 headers:{
-"X-CSRFToken":"{{ csrf_token }}",
+"X-CSRFToken": csrftoken,
 "Content-Type":"application/json"
 }
 
