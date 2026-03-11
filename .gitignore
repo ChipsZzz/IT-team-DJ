@@ -206,3 +206,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 db.sqlite3
+# User uploaded files
+media/
+
+# Static build files
+staticfiles/
