@@ -26,15 +26,20 @@ def home(request):
 def item_list(request):
 
     query = request.GET.get("q", "")
+    category = request.GET.get("category", "")
 
     items = Item.objects.all().order_by("-created_at")
 
     if query:
         items = items.filter(title__icontains=query)
 
+    if category:
+        items = items.filter(category=category)
+
     return render(request, "items/item_list.html", {
         "items": items,
-        "query": query
+        "query": query,
+        "category": category
     })
 
 
@@ -132,4 +137,70 @@ def favourite_items(request):
 
     return render(request, "items/favourites.html", {
         "items": items
+    })
+
+@login_required
+def item_edit(request, id):
+
+    item = get_object_or_404(Item, id=id)
+
+    if item.owner != request.user:
+        return redirect("item_detail", id=id)
+
+    if request.method == "POST":
+        form = ItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect("item_detail", id=id)
+
+    else:
+        form = ItemForm(instance=item)
+
+    return render(request, "items/item_form.html", {
+        "form": form
+    })
+
+
+@login_required
+def item_delete(request, id):
+
+    item = get_object_or_404(Item, id=id)
+
+    if item.owner != request.user:
+        return redirect("item_detail", id=id)
+
+    if request.method == "POST":
+        item.delete()
+        return redirect("item_list")
+
+    return render(request, "items/item_delete.html", {
+        "item": item
+    })
+
+
+@login_required
+def buy_item(request, id):
+
+    item = get_object_or_404(Item, id=id)
+
+    if item.status == "sold":
+        return redirect("item_detail", id=id)
+
+    item.status = "sold"
+    item.buyer = request.user
+    item.save()
+
+    return redirect("item_detail", id=id)
+
+
+@login_required
+def purchase_history(request):
+
+    purchases = Item.objects.filter(buyer=request.user)
+
+    sales = Item.objects.filter(owner=request.user, status="sold")
+
+    return render(request, "items/purchase_history.html", {
+        "purchases": purchases,
+        "sales": sales
     })

@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # apps
+    # project apps
     'items',
     'comments',
     'users',
+    'cart',
 
 ]
 
@@ -84,7 +85,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        # 关键：全局 templates 文件夹
         'DIRS': [BASE_DIR / "templates"],
 
         'APP_DIRS': True,
@@ -100,6 +100,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
 
                 'django.contrib.messages.context_processors.messages',
+
+                # cart count for navbar
+                'cart.context_processors.cart_count',
 
             ],
         },
@@ -185,12 +188,14 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # ========================
-# MEDIA FILES (图片上传)
+# MEDIA FILES
 # ========================
 
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+MEDIA_ROOT.mkdir(exist_ok=True)
 
 
 # ========================

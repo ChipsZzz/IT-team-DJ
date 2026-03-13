@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Purchase History</h2>
+
+<h4 class="mt-4">My Purchases</h4>
+
+{% for item in purchases %}
+
+<p>
+{{ item.title }} - £{{ item.price }}
+</p>
+
+{% empty %}
+
+<p>No purchases yet.</p>
+
+{% endfor %}
+
+
+<h4 class="mt-4">My Sales</h4>
+
+{% for item in sales %}
+
+<p>
+{{ item.title }} - £{{ item.price }}
+</p>
+
+{% empty %}
+
+<p>No sales yet.</p>
+
+{% endfor %}
+
+{% endblock %}

@@ -41,27 +41,73 @@ style="max-height:350px;object-fit:cover"
 </p>
 
 
+<!-- =========================
+BUY BUTTON
+========================= -->
+
+{% if item.status == "available" and user.is_authenticated and user != item.owner %}
+
+<a
+href="/items/{{ item.id }}/buy/"
+class="btn btn-success mb-3"
+>
+Buy Item
+</a>
+
+{% elif item.status == "sold" %}
+
+<span class="badge bg-danger mb-3">
+Sold
+</span>
+
+{% endif %}
+
+
+<!-- =========================
+FAVOURITE BUTTON
+========================= -->
+
+
+<a
+href="/cart/add/{{ item.id }}/"
+class="btn btn-success mb-3"
+>
+🛒 Add to Cart
+</a>
+
+
 {% if user.is_authenticated %}
 
 <button
 id="favButton"
 class="btn btn-outline-danger mb-3"
 >
+
 {% if user in item.favourites.all %}
+
 ❤️ Remove Favourite
+
 {% else %}
+
 ♥ Add to Favourite
+
 {% endif %}
+
 </button>
 
 {% endif %}
 
 
 <p class="text-muted small">
+
 ❤️ <span id="favCount">
+
 {{ item.favourites.count }}
+
 </span>
+
 users favourited this item
+
 </p>
 
 </div>
@@ -242,8 +288,6 @@ return cookieValue;
 
 const csrftoken = getCookie("csrftoken");
 
-
-
 const favButton = document.getElementById("favButton");
 const favCount = document.getElementById("favCount");
 
@@ -287,6 +331,5 @@ favButton.innerText = "♥ Add to Favourite";
 }
 
 </script>
-
 
 {% endblock %}

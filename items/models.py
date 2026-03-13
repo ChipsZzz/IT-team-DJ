@@ -8,6 +8,13 @@ class Item(models.Model):
         ("books", "Books"),
         ("electronics", "Electronics"),
         ("fashion", "Fashion"),
+        ("furniture", "Furniture"),
+        ("bikes", "Bikes"),
+        ("gaming", "Gaming"),
+        ("phones", "Phones"),
+        ("laptops", "Laptops"),
+        ("sports", "Sports"),
+        ("appliances", "Appliances"),
         ("other", "Other")
     ]
 
@@ -20,6 +27,14 @@ class Item(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name="items"
+    )
+
+    buyer = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="purchased_items"
     )
 
     category = models.CharField(

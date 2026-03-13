@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card p-4">
+
+<h3>Delete Item</h3>
+
+<p>Are you sure you want to delete:</p>
+
+<strong>{{ item.title }}</strong>
+
+<form method="post">
+
+{% csrf_token %}
+
+<button class="btn btn-danger mt-3">
+Confirm Delete
+</button>
+
+<a href="/items/{{ item.id }}/" class="btn btn-secondary mt-3">
+Cancel
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}
