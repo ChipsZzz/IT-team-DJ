@@ -1,11 +1,35 @@
 # UniTrade – University Marketplace Web Application
-COMPSCI5012 ITECH Coursework – University of Glasgow
+
+COMPSCI5012 Internet Technology Coursework  
+University of Glasgow
+
+---
+
+## Live Deployment
+
+The application is deployed online using Render.
+
+Live website:
+
+https://it-team-dj.onrender.com
+
+---
 
 ## Project Overview
 
-UniTrade is a web-based marketplace platform designed for university students to buy and sell second-hand items. The application allows users to list items for sale, browse listings, manage personal accounts, and interact with other users through features such as favourites, comments, and cart functionality.
+UniTrade is a web-based marketplace platform designed for university students to buy and sell second-hand items.
 
-The system is implemented using the Django web framework and follows a modular architecture that separates functionality into reusable applications.
+The system allows users to:
+
+- create item listings
+- browse marketplace listings
+- search and filter items
+- save favourite items
+- add items to a cart
+- leave comments on item listings
+- manage account information and delivery addresses
+
+The application is built using the Django web framework and follows a modular architecture where functionality is separated into reusable apps.
 
 ---
 
@@ -15,13 +39,19 @@ The system is implemented using the Django web framework and follows a modular a
 Users can register, log in, and log out using Django’s built-in authentication system.
 
 ### Marketplace Listings
-Users can create listings including title, description, price, and images.
+Users can create listings including:
+
+- title
+- description
+- price
+- category
+- item image
 
 ### Search and Filtering
-Users can browse and search for items in the marketplace.
+Users can search and filter items using front-end JavaScript interaction.
 
 ### Favourites System
-Users can mark items as favourites to easily access them later.
+Users can save items to a personal favourites list.
 
 ### Cart System
 Users can add items to a cart before purchasing.
@@ -30,10 +60,10 @@ Users can add items to a cart before purchasing.
 Users can leave comments on item listings.
 
 ### Address Management
-Users can manage their delivery address through the account dashboard.
+Users can manage delivery addresses through the account dashboard.
 
 ### Responsive Design
-The interface uses Bootstrap to support desktop and mobile layouts.
+The interface uses Bootstrap to support both desktop and mobile layouts.
 
 ---
 
@@ -41,40 +71,63 @@ The interface uses Bootstrap to support desktop and mobile layouts.
 
 The project follows Django’s Model–View–Template (MVT) architecture.
 
-- Models define database structure.
-- Views handle business logic.
-- Templates manage presentation.
+- Models define database structure
+- Views handle business logic
+- Templates manage presentation
 
-The system is organised into multiple Django apps:
+The project is organised into several Django apps:
 
 | App | Responsibility |
 |----|----|
 items | marketplace item management |
-cart | cart functionality |
+cart | shopping cart functionality |
+comments | item comments |
 users | account dashboard and address management |
 accounts | authentication and registration |
-comments | item comments |
+
+---
+
+## Project Structure
+
+```
+IT-team-DJ
+│
+├── items/          # marketplace item management
+├── cart/           # cart functionality
+├── comments/       # comment system
+├── users/          # account dashboard and address
+├── accounts/       # authentication and registration
+├── templates/      # global templates
+├── media/          # uploaded item images
+├── config/         # Django settings
+├── manage.py
+└── requirements.txt
+```
 
 ---
 
 ## Technologies Used
 
-Backend:
+### Backend
+
 - Python
 - Django
 - Django ORM
 - SQLite
 
-Frontend:
+### Frontend
+
 - HTML
 - CSS
 - Bootstrap
 - JavaScript
 
-Development Tools:
+### Development Tools
+
 - Visual Studio Code
 - Git and GitHub
-- Chrome DevTools (Lighthouse)
+- Chrome DevTools
+- Lighthouse
 
 ---
 
@@ -83,8 +136,8 @@ Development Tools:
 Clone the repository:
 
 ```bash
-git clone <repository-url>
-cd UniTrade
+git clone https://github.com/ChipsZzz/IT-team-DJ
+cd IT-team-DJ
 ```
 
 Create a virtual environment:
@@ -105,7 +158,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Apply migrations:
+Apply database migrations:
 
 ```bash
 python manage.py migrate
@@ -117,7 +170,7 @@ Run the development server:
 python manage.py runserver
 ```
 
-Open in browser:
+Open the site in a browser:
 
 ```
 http://127.0.0.1:8000
@@ -127,18 +180,31 @@ http://127.0.0.1:8000
 
 ## Running Unit Tests
 
-Run tests using Django’s testing framework:
+Backend functionality is tested using Django’s built-in testing framework.
+
+Run the test suite using:
 
 ```bash
 python manage.py test
 ```
 
+The tests verify core backend components including:
+
+- Item model behaviour
+- Item view responses
+- Cart functionality
+- Comment system logic
+- Authentication protection
+
+Example test output:
+
+```
+Found 12 tests
+Ran 12 tests
+OK
+```
+
 Django automatically creates a temporary test database and removes it after testing.
-
-The project currently includes tests for:
-
-- Item model
-- Address model
 
 ---
 
@@ -148,24 +214,24 @@ Accessibility was evaluated using Google Lighthouse.
 
 The application follows accessibility practices such as:
 
-- semantic HTML
+- semantic HTML structure
 - labelled form fields
-- readable layout and contrast
+- readable layout and colour contrast
 
 Accessibility scores range between **73 and 82** across tested pages.
 
 ---
 
-## Sustainability and Performance
+## Performance and Sustainability
 
-Performance was evaluated using Google Lighthouse.
+Performance analysis was conducted using Lighthouse.
 
 | Page | Performance | Accessibility | Best Practices | SEO |
 |----|----|----|----|----|
 Homepage | 100 | 79–82 | 100 | 82 |
 Marketplace | 100 | 73 | 100 | 82 |
 
-The application achieves excellent performance due to efficient resource loading and lightweight design.
+The application achieves strong performance due to lightweight assets and efficient page rendering.
 
 ---
 
@@ -174,17 +240,19 @@ The application achieves excellent performance due to efficient resource loading
 Potential improvements include:
 
 - payment integration
-- advanced search filters
 - messaging between buyers and sellers
+- advanced search filters
 - recommendation systems
 
 ---
 
-## Author
+## Authors
 
 Team DJ
-Zhen Liu 3149144L
-Zhenyu Wang 3075222W
-Tianxin Han 3047131H
+
+Zhen Liu – 3149144L  
+Zhenyu Wang – 3075222W  
+Tianxin Han – 3047131H  
+
 University of Glasgow  
-COMPSCI5012 Internet Technology Coursework Project
+COMPSCI5012 Internet Technology Coursework
