@@ -180,9 +180,13 @@ USE_TZ = True
 # STATIC FILES
 # ========================
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
@@ -191,11 +195,13 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # MEDIA FILES
 # ========================
 
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / "media"
 
-MEDIA_ROOT.mkdir(exist_ok=True)
+
+# 将 media 目录加入 static 处理
+STATICFILES_DIRS += [MEDIA_ROOT]
 
 
 # ========================
