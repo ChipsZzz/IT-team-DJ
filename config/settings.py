@@ -5,6 +5,7 @@ Django settings for config project.
 from pathlib import Path
 import os
 import dj_database_url
+import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -154,7 +155,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # ========================
-# MEDIA FILES（本地备用，不影响Cloudinary）
+# MEDIA FILES（保留）
 # ========================
 
 MEDIA_URL = "/media/"
@@ -162,17 +163,15 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ========================
-# CLOUDINARY（最终稳定版）
+# CLOUDINARY（关键）
 # ========================
 
-# ⚠️ 核心：强制使用环境变量（Render）
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
-    'API_KEY': os.environ.get('API_KEY'),
-    'API_SECRET': os.environ.get('API_SECRET'),
-}
+# ✅ 自动读取 CLOUDINARY_URL（Render）
+cloudinary.config(
+    secure=True
+)
 
-# ⚠️ 核心：覆盖默认文件存储
+# ✅ 强制使用 Cloudinary 存储
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
