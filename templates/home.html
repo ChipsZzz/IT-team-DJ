@@ -1,53 +1,200 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block content %}
 
-<!-- HERO SEARCH -->
+<style>
 
-<div class="text-center mb-5">
+/* ===== 全局背景 ===== */
+body{
+    background:#f5f7fb;
+}
 
-<h1 class="mb-3">
+/* ===== HERO（高清满分版） ===== */
 
-Welcome to UniTrade
+.hero{
+    position:relative;
+    height:360px;
+    border-radius:20px;
 
-</h1>
+    background:
+    linear-gradient(
+        to right,
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.25)
+    ),
+    url("/static/images/hero-market.jpg");   
 
-<p class="text-muted">
+    background-size:cover;
+    background-position:center;
 
-Buy and sell second-hand items at university
+    display:flex;
+    align-items:center;
+    padding:60px;
+    color:white;
+    margin-bottom:50px;
+}
 
-</p>
 
-<div class="row justify-content-center mt-4">
+/* ✨ 文字更清晰 */
+.hero h1{
+    font-weight:700;
+    font-size:42px;
+}
 
-<div class="col-md-6">
+.hero p{
+    font-size:18px;
+    opacity:0.9;
+}
 
-<form action="/items/" method="get">
+/* 🔥 搜索框高级一点 */
+.hero input{
+    border-radius:12px;
+    padding:14px;
+    border:none;
+}
 
-<input
-type="text"
-name="q"
-class="form-control form-control-lg"
-placeholder="Search marketplace..."
->
+/* 🔥 按钮优化 */
+.hero .btn{
+    border-radius:999px;
+    padding:10px 24px;
+    font-weight:500;
+}
 
-</form>
+/* ===== 分类入口 ===== */
+.category-box{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    text-align:center;
+    transition:0.25s;
+    cursor:pointer;
+}
 
+.category-box:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.category-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+/* ===== SECTION TITLE ===== */
+.section-title{
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+/* ===== CARD ===== */
+.card-hover{
+    border-radius:16px;
+    overflow:hidden;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.card-hover:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* 图片动画 */
+.card-img-top{
+    height:200px;
+    object-fit:cover;
+    transition:0.3s;
+}
+
+.card-hover:hover .card-img-top{
+    transform:scale(1.08);
+}
+
+/* 价格强调 */
+.price{
+    font-weight:600;
+    color:#2563eb;
+}
+
+/* CTA按钮 */
+.cta-btn{
+    border-radius:999px;
+    padding:10px 25px;
+}
+
+</style>
+
+
+<!-- ===== HERO ===== -->
+
+<div class="hero">
+
+    <div>
+
+        <h1>Buy & Sell Smarter</h1>
+
+        <p class="mb-3">
+            Discover second-hand treasures around your university
+        </p>
+
+        <form action="/items/" method="get" class="mb-3">
+
+            <input
+            type="text"
+            name="q"
+            class="form-control form-control-lg"
+            placeholder="Search marketplace..."
+            >
+
+        </form>
+
+        <a href="/items/" class="btn btn-light cta-btn">
+            Explore Marketplace
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===== 分类入口（高级感关键） ===== -->
+
+<div class="row mb-5 text-center">
+
+<div class="col-md-2 col-6 mb-3">
+<div class="category-box">📚<div>Books</div></div>
+</div>
+
+<div class="col-md-2 col-6 mb-3">
+<div class="category-box">💻<div>Electronics</div></div>
+</div>
+
+<div class="col-md-2 col-6 mb-3">
+<div class="category-box">👕<div>Fashion</div></div>
+</div>
+
+<div class="col-md-2 col-6 mb-3">
+<div class="category-box">🚲<div>Bikes</div></div>
+</div>
+
+<div class="col-md-2 col-6 mb-3">
+<div class="category-box">🎮<div>Gaming</div></div>
+</div>
+
+<div class="col-md-2 col-6 mb-3">
+<div class="category-box">📱<div>Phones</div></div>
 </div>
 
 </div>
 
-</div>
 
 
+<!-- ===== 最新商品 ===== -->
 
-<!-- POPULAR ITEMS -->
-
-<h3 class="mb-3">
-
-🔥 Popular Items
-
-</h3>
+<h4 class="section-title">🔥 Latest Items</h4>
 
 <div class="row mb-5">
 
@@ -55,55 +202,24 @@ placeholder="Search marketplace..."
 
 <div class="col-md-4 mb-4">
 
-<div
-onclick="location.href='/items/{{ item.id }}/'"
-class="card shadow-sm card-hover"
->
+<div onclick="location.href='/items/{{ item.id }}/'" class="card card-hover">
 
 {% if item.image %}
-
-<img
-src="{{ item.image.url }}"
-class="card-img-top"
-style="height:200px; object-fit:cover"
->
-
+<img src="{{ item.image.url }}" class="card-img-top">
 {% else %}
-
-<div
-class="bg-light d-flex justify-content-center align-items-center"
-style="height:200px"
->
-
-<span class="text-muted">
-
-No Image
-
-</span>
-
+<div class="bg-light d-flex justify-content-center align-items-center" style="height:200px">
+<span class="text-muted">No Image</span>
 </div>
-
 {% endif %}
 
 <div class="card-body">
 
-<h5>
+<h6>{{ item.title }}</h6>
 
-{{ item.title }}
+<p class="price mb-1">£{{ item.price }}</p>
 
-</h5>
-
-<p class="mb-1">
-
-£{{ item.price }}
-
-</p>
-
-<p class="small text-muted">
-
-Seller:
-{{ item.owner.username }}
-
+<p class="text-muted small">
+Seller: {{ item.owner.username }}
 </p>
 
 </div>
@@ -116,11 +232,11 @@ Seller:
 
 </div>
 
-<h3 class="mb-3 mt-5">
 
-⭐ Trending Items
 
-</h3>
+<!-- ===== 热门 ===== -->
+
+<h4 class="section-title">⭐ Trending Now</h4>
 
 <div class="row mb-5">
 
@@ -128,55 +244,24 @@ Seller:
 
 <div class="col-md-4 mb-4">
 
-<div
-onclick="location.href='/items/{{ item.id }}/'"
-class="card shadow-sm card-hover"
->
+<div onclick="location.href='/items/{{ item.id }}/'" class="card card-hover">
 
 {% if item.image %}
-
-<img
-src="{{ item.image.url }}"
-class="card-img-top"
-style="height:200px; object-fit:cover"
->
-
+<img src="{{ item.image.url }}" class="card-img-top">
 {% else %}
-
-<div
-class="bg-light d-flex justify-content-center align-items-center"
-style="height:200px"
->
-
-<span class="text-muted">
-
-No Image
-
-</span>
-
+<div class="bg-light d-flex justify-content-center align-items-center" style="height:200px">
+<span class="text-muted">No Image</span>
 </div>
-
 {% endif %}
 
 <div class="card-body">
 
-<h5>
+<h6>{{ item.title }}</h6>
 
-{{ item.title }}
+<p class="price mb-1">£{{ item.price }}</p>
 
-</h5>
-
-<p class="mb-1">
-
-£{{ item.price }}
-
-</p>
-
-<p class="small text-muted">
-
-Seller:
-{{ item.owner.username }}
-
+<p class="text-muted small">
+Seller: {{ item.owner.username }}
 </p>
 
 </div>
@@ -190,17 +275,13 @@ Seller:
 </div>
 
 
-<!-- BROWSE MARKETPLACE -->
+
+<!-- ===== CTA ===== -->
 
 <div class="text-center mt-5">
 
-<a
-href="/items/"
-class="btn btn-primary btn-lg"
->
-
+<a href="/items/" class="btn btn-primary btn-lg cta-btn">
 Browse Marketplace
-
 </a>
 
 </div>

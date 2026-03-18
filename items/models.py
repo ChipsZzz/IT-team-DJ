@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class Item(models.Model):
 
@@ -51,7 +51,6 @@ class Item(models.Model):
 
     description = models.TextField()
 
-    from cloudinary_storage.storage import MediaCloudinaryStorage
 
     image = models.ImageField(
         upload_to="items/",

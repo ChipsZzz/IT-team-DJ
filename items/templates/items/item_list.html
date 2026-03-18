@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -20,10 +21,6 @@ height:200px;
 object-fit:cover;
 }
 
-.category-btn{
-margin:4px;
-}
-
 </style>
 
 
@@ -38,7 +35,6 @@ Sell Item
 </a>
 
 </div>
-
 
 
 <!-- SEARCH + CATEGORY -->
@@ -102,10 +98,11 @@ Price High → Low
 </div>
 
 
-
 <!-- ITEMS -->
 
 <div id="itemsContainer" class="row">
+
+{% if items %}
 
 {% for item in items %}
 
@@ -121,7 +118,7 @@ onclick="location.href='/items/{{ item.id }}/'"
 class="card shadow-sm card-hover"
 >
 
-{% if item.image %}
+{% if item.image and item.image.url %}
 
 <img
 src="{{ item.image.url }}"
@@ -131,16 +128,10 @@ class="card-img-top"
 
 {% else %}
 
-<div
-class="bg-light d-flex justify-content-center align-items-center"
-style="height:200px"
+<img
+src="{% static 'default.png' %}"
+class="card-img-top"
 >
-
-<span class="text-muted">
-No Image
-</span>
-
-</div>
 
 {% endif %}
 
@@ -172,8 +163,15 @@ Seller:
 
 {% endfor %}
 
+{% else %}
+
+<div class="text-center mt-5">
+<p class="text-muted">No items found</p>
 </div>
 
+{% endif %}
+
+</div>
 
 
 <script>
@@ -183,7 +181,6 @@ const items = document.querySelectorAll(".item-card");
 const sortSelect = document.getElementById("sortSelect");
 const categorySelect = document.getElementById("categorySelect");
 const container = document.getElementById("itemsContainer");
-
 
 
 /* SEARCH */
@@ -208,7 +205,6 @@ item.style.display="none";
 });
 
 
-
 /* CATEGORY FILTER */
 
 categorySelect.addEventListener("change", function(){
@@ -227,7 +223,6 @@ item.style.display="none";
 });
 
 });
-
 
 
 /* SORT */
@@ -249,6 +244,5 @@ itemsArray.forEach(item=>container.appendChild(item));
 });
 
 </script>
-
 
 {% endblock %}

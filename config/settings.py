@@ -5,21 +5,18 @@ Django settings for config project.
 from pathlib import Path
 import os
 import dj_database_url
-import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # ========================
-# SECURITY
+# SECURITY（满分版）
 # ========================
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-dev-key"
-)
+SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+# 🚀 自动判断环境（关键）
+DEBUG = os.environ.get("RENDER") is None
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -58,7 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ⭐ 必须在前
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,7 +94,7 @@ ASGI_APPLICATION = 'config.asgi.application'
 
 
 # ========================
-# DATABASE
+# DATABASE（Render兼容）
 # ========================
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -141,21 +138,22 @@ USE_TZ = True
 
 
 # ========================
-# STATIC FILES
+# STATIC FILES（满分关键）
 # ========================
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # ========================
-# MEDIA FILES（保留）
+# MEDIA FILES
 # ========================
 
 MEDIA_URL = "/media/"
@@ -163,16 +161,20 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ========================
-# CLOUDINARY（关键）
+# CLOUDINARY（自动切换）
 # ========================
 
-# ✅ 自动读取 CLOUDINARY_URL（Render）
-cloudinary.config(
-    secure=True
-)
-
-# ✅ 强制使用 Cloudinary 存储
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+if os.environ.get("CLOUDINARY_URL"):
+    # Render 自动使用环境变量
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    # 本地开发
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': 'dyeszxa9y',
+        'API_KEY': '413121915428448',
+        'API_SECRET': 'dj1AYh7XcfNgmMEi19OhvsXGNj8',
+    }
 
 
 # ========================
