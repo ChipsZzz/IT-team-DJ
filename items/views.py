@@ -117,17 +117,20 @@ def toggle_favourite(request, id):
 
     item = get_object_or_404(Item, id=id)
 
-    if request.user in item.favourites.all():
-        item.favourites.remove(request.user)
-        favourited = False
-    else:
-        item.favourites.add(request.user)
-        favourited = True
+    if request.method == "POST":
+        if request.user in item.favourites.all():
+            item.favourites.remove(request.user)
+            favourited = False
+        else:
+            item.favourites.add(request.user)
+            favourited = True
 
-    return JsonResponse({
-        "favourited": favourited,
-        "count": item.favourites.count()
-    })
+        return JsonResponse({
+            "favourited": favourited,
+            "count": item.favourites.count()
+        })
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 @login_required
