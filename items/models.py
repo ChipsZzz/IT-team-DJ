@@ -51,8 +51,11 @@ class Item(models.Model):
 
     description = models.TextField()
 
+    from cloudinary_storage.storage import MediaCloudinaryStorage
+
     image = models.ImageField(
         upload_to="items/",
+        storage=MediaCloudinaryStorage(),  # ⭐关键
         blank=True,
         null=True
     )
