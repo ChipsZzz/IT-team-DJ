@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'users',
     'cart',
 
-    # ✅ Cloudinary（新增）
+    # cloudinary
     'cloudinary',
     'cloudinary_storage',
 ]
@@ -154,7 +154,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # ========================
-# MEDIA FILES（保留，不影响）
+# MEDIA FILES（本地备用，不影响Cloudinary）
 # ========================
 
 MEDIA_URL = "/media/"
@@ -162,16 +162,18 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ========================
-# CLOUDINARY（核心修复）
+# CLOUDINARY（最终稳定版）
 # ========================
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
+# ⚠️ 核心：强制使用环境变量（Render）
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('API_KEY'),
     'API_SECRET': os.environ.get('API_SECRET'),
 }
+
+# ⚠️ 核心：覆盖默认文件存储
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 # ========================
