@@ -43,17 +43,24 @@ def remove_from_cart(request, id):
 @login_required
 def checkout_selected(request):
 
-    cart_items = CartItem.objects.filter(user=request.user)
+    if request.method == "POST":
 
-    for cart in cart_items:
-        item = cart.item
+        selected_ids = request.POST.getlist("selected_items")
 
-        if item.status == "available":
-            item.status = "sold"
-            item.buyer = request.user
-            item.purchase_time = timezone.now()
-            item.save()
+        cart_items = CartItem.objects.filter(
+            id__in=selected_ids,
+            user=request.user
+        )
 
-        cart.delete()
+        for cart in cart_items:
+            item = cart.item
+
+            if item.status == "available":
+                item.status = "sold"
+                item.buyer = request.user
+                item.purchase_time = timezone.now()
+                item.save()
+
+            cart.delete()
 
     return redirect("purchase_history")

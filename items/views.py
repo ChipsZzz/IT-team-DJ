@@ -251,3 +251,20 @@ def my_purchases(request):
 def my_sales(request):
     items = Item.objects.filter(owner=request.user, status="sold")
     return render(request, "items/my_sales.html", {"items": items})
+
+
+from django.utils import timezone
+
+@login_required
+def return_item(request, id):
+
+    item = get_object_or_404(Item, id=id, buyer=request.user)
+
+    if item.status == "sold" and not item.is_returned:
+        item.status = "available"
+        item.buyer = None
+        item.return_time = timezone.now()
+        item.is_returned = True
+        item.save()
+
+    return redirect("purchase_history")

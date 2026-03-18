@@ -33,4 +33,14 @@
 
 {% endfor %}
 
+<p>Purchased at: {{ item.purchase_time }}</p>
+
+{% if not item.is_returned %}
+<a href="/items/{{ item.id }}/return/" class="btn btn-warning btn-sm">
+Return
+</a>
+{% else %}
+<p class="text-success">Returned at: {{ item.return_time }}</p>
+{% endif %}
+
 {% endblock %}
