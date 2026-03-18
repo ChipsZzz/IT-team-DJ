@@ -28,7 +28,7 @@ def item_list(request):
     query = request.GET.get("q", "")
     category = request.GET.get("category", "")
 
-    items = Item.objects.all().order_by("-created_at")
+    items = Item.objects.filter(status="available").order_by("-created_at")
 
     if query:
         items = items.filter(title__icontains=query)
@@ -92,11 +92,13 @@ def item_create(request):
 
 @login_required
 def my_items(request):
+    my_items = Item.objects.filter(owner=request.user)
 
-    items = Item.objects.filter(owner=request.user)
+    purchased_items = Item.objects.filter(buyer=request.user)
 
     return render(request, "items/my_items.html", {
-        "items": items
+        "my_items": my_items,
+        "purchased_items": purchased_items,
     })
 
 
@@ -268,3 +270,21 @@ def return_item(request, id):
         item.save()
 
     return redirect("purchase_history")
+
+
+@login_required
+def my_purchases(request):
+    purchases = Item.objects.filter(buyer=request.user, is_returned=False)
+    return render(request, "items/my_purchases.html", {"items": purchases})
+
+
+@login_required
+def my_sales(request):
+    sales = Item.objects.filter(owner=request.user, status="sold")
+    return render(request, "items/my_sales.html", {"items": sales})
+
+
+@login_required
+def returned_items(request):
+    returned = Item.objects.filter(buyer=request.user, is_returned=True)
+    return render(request, "items/returned_items.html", {"items": returned})

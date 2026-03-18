@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Returned Items</h2>
+
+{% for item in items %}
+
+<p>
+{{ item.title }} - £{{ item.price }}
+<br>
+Returned at: {{ item.return_time }}
+</p>
+
+{% empty %}
+<p>No returned items.</p>
+{% endfor %}
+
+{% endblock %}

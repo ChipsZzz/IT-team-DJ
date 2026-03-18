@@ -11,7 +11,7 @@ body{
     background:#f5f7fb;
 }
 
-/* ===== HERO（高清满分版） ===== */
+/* ===== HERO ===== */
 
 .hero{
     position:relative;
@@ -36,8 +36,6 @@ body{
     margin-bottom:50px;
 }
 
-
-/* ✨ 文字更清晰 */
 .hero h1{
     font-weight:700;
     font-size:42px;
@@ -48,14 +46,12 @@ body{
     opacity:0.9;
 }
 
-/* 🔥 搜索框高级一点 */
 .hero input{
     border-radius:12px;
     padding:14px;
     border:none;
 }
 
-/* 🔥 按钮优化 */
 .hero .btn{
     border-radius:999px;
     padding:10px 24px;
@@ -63,13 +59,13 @@ body{
 }
 
 /* ===== 分类入口 ===== */
+
 .category-box{
     background:white;
     border-radius:14px;
     padding:18px;
     text-align:center;
     transition:0.25s;
-    cursor:pointer;
 }
 
 .category-box:hover{
@@ -77,18 +73,20 @@ body{
     box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
 
-.category-icon{
-    font-size:28px;
-    margin-bottom:8px;
+/* 🔥 关键：让整个区域可点击 */
+.category-link{
+    text-decoration:none;
+    color:inherit;
+    display:block;
 }
 
-/* ===== SECTION TITLE ===== */
+/* ===== SECTION ===== */
+
 .section-title{
     font-weight:600;
     margin-bottom:20px;
 }
 
-/* ===== CARD ===== */
 .card-hover{
     border-radius:16px;
     overflow:hidden;
@@ -101,24 +99,16 @@ body{
     box-shadow:0 15px 40px rgba(0,0,0,0.15);
 }
 
-/* 图片动画 */
 .card-img-top{
     height:200px;
     object-fit:cover;
-    transition:0.3s;
 }
 
-.card-hover:hover .card-img-top{
-    transform:scale(1.08);
-}
-
-/* 价格强调 */
 .price{
     font-weight:600;
     color:#2563eb;
 }
 
-/* CTA按钮 */
 .cta-btn{
     border-radius:999px;
     padding:10px 25px;
@@ -130,9 +120,7 @@ body{
 <!-- ===== HERO ===== -->
 
 <div class="hero">
-
     <div>
-
         <h1>Buy & Sell Smarter</h1>
 
         <p class="mb-3">
@@ -140,52 +128,60 @@ body{
         </p>
 
         <form action="/items/" method="get" class="mb-3">
-
             <input
             type="text"
             name="q"
             class="form-control form-control-lg"
             placeholder="Search marketplace..."
             >
-
         </form>
 
         <a href="/items/" class="btn btn-light cta-btn">
             Explore Marketplace
         </a>
-
     </div>
-
 </div>
 
 
 
-<!-- ===== 分类入口（高级感关键） ===== -->
+<!-- ===== 分类入口（彻底修复版） ===== -->
 
 <div class="row mb-5 text-center">
 
 <div class="col-md-2 col-6 mb-3">
+<a href="/items/?category=books" class="category-link">
 <div class="category-box">📚<div>Books</div></div>
+</a>
 </div>
 
 <div class="col-md-2 col-6 mb-3">
+<a href="/items/?category=electronics" class="category-link">
 <div class="category-box">💻<div>Electronics</div></div>
+</a>
 </div>
 
 <div class="col-md-2 col-6 mb-3">
+<a href="/items/?category=fashion" class="category-link">
 <div class="category-box">👕<div>Fashion</div></div>
+</a>
 </div>
 
 <div class="col-md-2 col-6 mb-3">
+<a href="/items/?category=bikes" class="category-link">
 <div class="category-box">🚲<div>Bikes</div></div>
+</a>
 </div>
 
 <div class="col-md-2 col-6 mb-3">
+<a href="/items/?category=gaming" class="category-link">
 <div class="category-box">🎮<div>Gaming</div></div>
+</a>
 </div>
 
 <div class="col-md-2 col-6 mb-3">
+<a href="/items/?category=phones" class="category-link">
 <div class="category-box">📱<div>Phones</div></div>
+</a>
 </div>
 
 </div>
@@ -213,15 +209,11 @@ body{
 {% endif %}
 
 <div class="card-body">
-
 <h6>{{ item.title }}</h6>
-
 <p class="price mb-1">£{{ item.price }}</p>
-
 <p class="text-muted small">
 Seller: {{ item.owner.username }}
 </p>
-
 </div>
 
 </div>
@@ -255,15 +247,11 @@ Seller: {{ item.owner.username }}
 {% endif %}
 
 <div class="card-body">
-
 <h6>{{ item.title }}</h6>
-
 <p class="price mb-1">£{{ item.price }}</p>
-
 <p class="text-muted small">
 Seller: {{ item.owner.username }}
 </p>
-
 </div>
 
 </div>
@@ -279,11 +267,9 @@ Seller: {{ item.owner.username }}
 <!-- ===== CTA ===== -->
 
 <div class="text-center mt-5">
-
 <a href="/items/" class="btn btn-primary btn-lg cta-btn">
 Browse Marketplace
 </a>
-
 </div>
 
 {% endblock %}

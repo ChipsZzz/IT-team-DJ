@@ -7,8 +7,9 @@
 
 <div class="card p-3 mb-3">
 
-<h4>{{ item.title }}</h4>
-<p>£{{ item.price }}</p>
+{{ item.title }} - £{{ item.price }}
+<br>
+Order ID: #ORD-{{ item.id|stringformat:"05d" }}
 
 <p>Purchased: {{ item.purchase_time }}</p>
 

@@ -31,4 +31,10 @@ urlpatterns = [
     
     path("<int:id>/return/", views.return_item, name="return_item"),
 
+    path("purchases/", views.my_purchases, name="my_purchases"),
+    
+    path("sales/", views.my_sales, name="my_sales"),
+    
+    path("returned/", views.returned_items, name="returned_items"),
+
 ]

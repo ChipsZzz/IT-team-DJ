@@ -42,3 +42,13 @@
 </div>
 
 {% endblock %}
+
+<h4 class="mt-4">🛍 Purchased Items</h4>
+
+{% for item in purchased_items %}
+<div class="card p-3 mb-2">
+    <strong>{{ item.title }}</strong> - £{{ item.price }}
+</div>
+{% empty %}
+<p>No purchased items.</p>
+{% endfor %}
