@@ -6,7 +6,7 @@ University of Glasgow
 
 ---
 
-## Live Deployment
+## 🌐 Live Deployment
 
 The application is fully deployed using Render:
 
@@ -16,21 +16,23 @@ This deployed version represents the final production-ready system, including UI
 
 ---
 
-## Project Overview
+## 📌 Project Overview
 
 UniTrade is a full-stack web-based marketplace platform designed for university students to buy and sell second-hand items in an efficient, user-friendly, and visually enhanced environment.
 
-The system supports the complete user journey from browsing listings to managing purchases and interactions.
+The system supports the complete user journey, including browsing, purchasing, selling, and managing items.
 
 ---
 
-## Key Features
+## 🚀 Key Features
 
-### User Authentication
+### 🔐 User Authentication
 
 Secure registration, login, and logout using Django’s built-in authentication system.
 
-### Marketplace Listings
+---
+
+### 🛍 Marketplace Listings
 
 Users can create listings including:
 
@@ -40,69 +42,101 @@ Users can create listings including:
 * category
 * image upload (Cloudinary integration)
 
-### Search and Filtering
+---
 
-Interactive search functionality improves discoverability and usability.
+### 🔎 Search and Category Filtering
 
-### Favourites System
+* Keyword-based search
+* Category filtering (Books, Electronics, Fashion, Bikes, Gaming, Phones)
+* Displays "No items found" when category is empty
+
+---
+
+### ❤️ Favourites System
 
 Users can save items to a personal favourites list.
 
-### Cart System
+---
 
-Users can add items to a cart before purchase.
+### 🛒 Cart and Purchase System
 
-### Comment System
+* Add items to cart
+* Complete purchase flow
+* Purchase history tracking
+
+---
+
+### 🔄 Return System
+
+* Users can return purchased items
+* Returned items are displayed in history
+* Improves realism of marketplace workflow
+
+---
+
+### 💬 Comment System
 
 Users can leave comments on item listings.
 
-### Address Management
+---
+
+### 📦 Sales & Purchase Dashboard
+
+Users can view:
+
+* My Purchases
+* My Sales
+* Returned Items
+
+---
+
+### 📍 Address Management
 
 Users can manage delivery addresses through the account dashboard.
 
 ---
 
-## UI and UX Design
+## 🎨 UI and UX Design
 
 The interface was refined to improve usability, clarity, and visual hierarchy.
 
 Enhancements include:
 
 * High-quality hero section with background imagery
-* Improved spacing, typography, and contrast
-* Interactive hover effects on item cards
+* Interactive category navigation
+* Clean card-based layout
+* Smooth hover animations
 * Clear call-to-action buttons
-* Responsive design for multiple screen sizes
+* Responsive design for all screen sizes
 
-These improvements enhance user experience without compromising performance.
+These improvements enhance user experience while maintaining strong performance.
 
 ---
 
-## System Architecture
+## 🏗 System Architecture
 
 The project follows Django’s Model–View–Template (MVT) architecture:
 
-* Models define database structure
-* Views handle business logic
-* Templates manage presentation
+* Models → database structure
+* Views → business logic
+* Templates → UI rendering
 
-The system is organised into modular Django apps:
+### 📦 Modular App Structure
 
 | App      | Responsibility                           |
 | -------- | ---------------------------------------- |
 | items    | marketplace item management              |
-| cart     | shopping cart functionality              |
+| cart     | shopping cart and purchasing             |
 | comments | item comments                            |
 | users    | account dashboard and address management |
 | accounts | authentication and registration          |
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
-```
 IT-team-DJ
-│
+
 ├── items/
 ├── cart/
 ├── comments/
@@ -115,11 +149,10 @@ IT-team-DJ
 ├── config/
 ├── manage.py
 └── requirements.txt
-```
 
 ---
 
-## Technologies Used
+## ⚙️ Technologies Used
 
 ### Backend
 
@@ -135,7 +168,7 @@ IT-team-DJ
 * Bootstrap
 * JavaScript
 
-### Deployment and Tools
+### Deployment & Tools
 
 * Render (deployment)
 * Cloudinary (media storage)
@@ -145,23 +178,17 @@ IT-team-DJ
 
 ---
 
-## Installation and Setup
+## 🧪 Installation and Setup
 
-```bash
 git clone https://github.com/ChipsZzz/IT-team-DJ
 cd IT-team-DJ
-```
 
-```bash
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-```
 
-```bash
 python manage.py migrate
 python manage.py runserver
-```
 
 Open in browser:
 
@@ -169,13 +196,9 @@ http://127.0.0.1:8000
 
 ---
 
-## Testing
+## 🧪 Testing
 
-Run backend tests:
-
-```bash
 python manage.py test
-```
 
 The test suite verifies:
 
@@ -187,58 +210,55 @@ The test suite verifies:
 
 ---
 
-## Accessibility and Performance
+## 📊 Accessibility and Performance
 
-The system was evaluated using Google Lighthouse.
+The system was evaluated using Google Lighthouse on the deployed version.
 
 | Page        | Performance | Accessibility | Best Practices | SEO |
 | ----------- | ----------- | ------------- | -------------- | --- |
-| Homepage    | 100         | 82            | 100            | 82  |
-| Marketplace | 100         | 73            | 100            | 82  |
+| Homepage    | 93          | 78            | 100            | 82  |
+| Marketplace | 99          | 71            | 100            | 82  |
 
-These results demonstrate that UI improvements enhanced usability while maintaining strong technical performance.
+These results indicate strong performance and compliance with modern web standards.
+Minor accessibility improvements remain possible but do not impact core usability.
 
 ---
 
-## Evaluation Evidence
+## 📸 Evaluation Evidence
 
 Supporting evaluation materials are included in:
 
-```
 report-assets/lighthouse/test/
-```
 
 This folder contains:
 
-* Lighthouse screenshots for multiple pages
-* Item detail performance results
-* Backend unit test evidence
-
-These assets provide verifiable proof of system performance and correctness.
+* Lighthouse screenshots
+* Performance analysis results
+* System validation evidence
 
 ---
 
-## Deployment Notes
+## 🚀 Deployment Notes
 
 The system is fully production-ready:
 
 * Static files served using WhiteNoise
 * Media files hosted via Cloudinary
-* Environment variables used for secure configuration
-* Database automatically configured for local and deployed environments
+* Environment variables for secure configuration
+* Database auto-configured for local and deployed environments
 
 ---
 
-## Future Improvements
+## 🔮 Future Improvements
 
-* Payment integration
-* Messaging system
+* Online payment integration
+* Real-time messaging system
 * Advanced filtering and sorting
-* Recommendation system
+* AI-based recommendation system
 
 ---
 
-## Authors
+## 👨‍💻 Authors
 
 Team DJ
 
