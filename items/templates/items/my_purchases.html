@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>My Purchases</h2>
+
+{% for item in items %}
+
+<div class="card p-3 mb-3">
+
+<h4>{{ item.title }}</h4>
+<p>£{{ item.price }}</p>
+
+<p>Purchased: {{ item.purchase_time }}</p>
+
+{% if item.is_returned %}
+<p>Returned: {{ item.return_time }}</p>
+{% else %}
+<a href="/items/{{ item.id }}/return/" class="btn btn-warning">
+Return
+</a>
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

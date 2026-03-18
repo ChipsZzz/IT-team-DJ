@@ -25,4 +25,10 @@ urlpatterns = [
 
     path("<int:id>/favourite/", views.toggle_favourite, name="toggle_favourite"),
 
+    path("purchases/", views.my_purchases, name="my_purchases"),
+    
+    path("sales/", views.my_sales, name="my_sales"),
+    
+    path("<int:id>/return/", views.return_item, name="return_item"),
+
 ]

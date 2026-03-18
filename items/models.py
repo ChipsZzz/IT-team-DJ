@@ -51,10 +51,9 @@ class Item(models.Model):
 
     description = models.TextField()
 
-
     image = models.ImageField(
         upload_to="items/",
-        storage=MediaCloudinaryStorage(),  # ⭐关键
+        storage=MediaCloudinaryStorage(),
         blank=True,
         null=True
     )
@@ -74,6 +73,26 @@ class Item(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
+
+    # =========================
+    # ⭐ 新增功能（交易生命周期）
+    # =========================
+
+    purchase_time = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    return_time = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    is_returned = models.BooleanField(
+        default=False
+    )
+
+    # =========================
 
     def __str__(self):
         return self.title

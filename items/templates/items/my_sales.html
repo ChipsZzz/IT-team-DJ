@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>My Sales</h2>
+
+{% for item in items %}
+
+<div class="card p-3 mb-3">
+
+<h4>{{ item.title }}</h4>
+<p>£{{ item.price }}</p>
+
+<p>Buyer: {{ item.buyer.username }}</p>
+<p>Sold at: {{ item.purchase_time }}</p>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

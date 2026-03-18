@@ -191,6 +191,7 @@ def buy_item(request, id):
 
     item.status = "sold"
     item.buyer = request.user
+    item.purchase_time = timezone.now()    
     item.save()
 
     return redirect("item_detail", id=id)
@@ -207,3 +208,46 @@ def purchase_history(request):
         "purchases": purchases,
         "sales": sales
     })
+
+
+from django.utils import timezone
+
+@login_required
+def checkout_selected(request):
+    if request.method == "POST":
+        item_ids = request.POST.getlist("selected_items")
+
+        items = Item.objects.filter(id__in=item_ids, status="available")
+
+        for item in items:
+            item.status = "sold"
+            item.buyer = request.user
+            item.purchase_time = timezone.now()
+            item.save()
+
+        return redirect("cart:cart")
+
+
+@login_required
+def return_item(request, id):
+    item = get_object_or_404(Item, id=id, buyer=request.user)
+
+    item.status = "available"
+    item.buyer = None
+    item.is_returned = True
+    item.return_time = timezone.now()
+    item.save()
+
+    return redirect("my_purchases")
+
+
+@login_required
+def my_purchases(request):
+    items = Item.objects.filter(buyer=request.user)
+    return render(request, "items/my_purchases.html", {"items": items})
+
+
+@login_required
+def my_sales(request):
+    items = Item.objects.filter(owner=request.user, status="sold")
+    return render(request, "items/my_sales.html", {"items": items})
