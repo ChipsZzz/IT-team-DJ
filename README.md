@@ -1,89 +1,100 @@
 # UniTrade – University Marketplace Web Application
 
-COMPSCI5012 Internet Technology Coursework  
+# COMPSCI5012 Internet Technology Coursework
+
 University of Glasgow
 
 ---
 
 ## Live Deployment
 
-The application is deployed online using Render.
-
-Live website:
+The application is fully deployed using Render:
 
 https://it-team-dj.onrender.com
+
+This deployed version represents the final production-ready system, including UI optimisation, static asset handling, and cloud-based media storage.
 
 ---
 
 ## Project Overview
 
-UniTrade is a web-based marketplace platform designed for university students to buy and sell second-hand items.
+UniTrade is a full-stack web-based marketplace platform designed for university students to buy and sell second-hand items in an efficient, user-friendly, and visually enhanced environment.
 
-The system allows users to:
-
-- create item listings
-- browse marketplace listings
-- search and filter items
-- save favourite items
-- add items to a cart
-- leave comments on item listings
-- manage account information and delivery addresses
-
-The application is built using the Django web framework and follows a modular architecture where functionality is separated into reusable apps.
+The system supports the complete user journey from browsing listings to managing purchases and interactions.
 
 ---
 
 ## Key Features
 
 ### User Authentication
-Users can register, log in, and log out using Django’s built-in authentication system.
+
+Secure registration, login, and logout using Django’s built-in authentication system.
 
 ### Marketplace Listings
+
 Users can create listings including:
 
-- title
-- description
-- price
-- category
-- item image
+* title
+* description
+* price
+* category
+* image upload (Cloudinary integration)
 
 ### Search and Filtering
-Users can search and filter items using front-end JavaScript interaction.
+
+Interactive search functionality improves discoverability and usability.
 
 ### Favourites System
+
 Users can save items to a personal favourites list.
 
 ### Cart System
-Users can add items to a cart before purchasing.
+
+Users can add items to a cart before purchase.
 
 ### Comment System
+
 Users can leave comments on item listings.
 
 ### Address Management
+
 Users can manage delivery addresses through the account dashboard.
 
-### Responsive Design
-The interface uses Bootstrap to support both desktop and mobile layouts.
+---
+
+## UI and UX Design
+
+The interface was refined to improve usability, clarity, and visual hierarchy.
+
+Enhancements include:
+
+* High-quality hero section with background imagery
+* Improved spacing, typography, and contrast
+* Interactive hover effects on item cards
+* Clear call-to-action buttons
+* Responsive design for multiple screen sizes
+
+These improvements enhance user experience without compromising performance.
 
 ---
 
 ## System Architecture
 
-The project follows Django’s Model–View–Template (MVT) architecture.
+The project follows Django’s Model–View–Template (MVT) architecture:
 
-- Models define database structure
-- Views handle business logic
-- Templates manage presentation
+* Models define database structure
+* Views handle business logic
+* Templates manage presentation
 
-The project is organised into several Django apps:
+The system is organised into modular Django apps:
 
-| App | Responsibility |
-|----|----|
-items | marketplace item management |
-cart | shopping cart functionality |
-comments | item comments |
-users | account dashboard and address management |
-accounts | authentication and registration |
+| App      | Responsibility                           |
+| -------- | ---------------------------------------- |
+| items    | marketplace item management              |
+| cart     | shopping cart functionality              |
+| comments | item comments                            |
+| users    | account dashboard and address management |
+| accounts | authentication and registration          |
 
 ---
 
@@ -92,14 +103,16 @@ accounts | authentication and registration |
 ```
 IT-team-DJ
 │
-├── items/          # marketplace item management
-├── cart/           # cart functionality
-├── comments/       # comment system
-├── users/          # account dashboard and address
-├── accounts/       # authentication and registration
-├── templates/      # global templates
-├── media/          # uploaded item images
-├── config/         # Django settings
+├── items/
+├── cart/
+├── comments/
+├── users/
+├── accounts/
+├── templates/
+├── static/
+├── media/
+├── report-assets/
+├── config/
 ├── manage.py
 └── requirements.txt
 ```
@@ -110,139 +123,118 @@ IT-team-DJ
 
 ### Backend
 
-- Python
-- Django
-- Django ORM
-- SQLite
+* Python
+* Django
+* Django ORM
+* PostgreSQL (production)
 
 ### Frontend
 
-- HTML
-- CSS
-- Bootstrap
-- JavaScript
+* HTML
+* CSS
+* Bootstrap
+* JavaScript
 
-### Development Tools
+### Deployment and Tools
 
-- Visual Studio Code
-- Git and GitHub
-- Chrome DevTools
-- Lighthouse
+* Render (deployment)
+* Cloudinary (media storage)
+* WhiteNoise (static file handling)
+* GitHub (version control)
+* Chrome DevTools & Lighthouse (evaluation)
 
 ---
 
 ## Installation and Setup
-
-Clone the repository:
 
 ```bash
 git clone https://github.com/ChipsZzz/IT-team-DJ
 cd IT-team-DJ
 ```
 
-Create a virtual environment:
-
 ```bash
 python -m venv .venv
-```
-
-Activate the environment (Windows):
-
-```bash
 .venv\Scripts\activate
-```
-
-Install dependencies:
-
-```bash
 pip install -r requirements.txt
 ```
 
-Apply database migrations:
-
 ```bash
 python manage.py migrate
-```
-
-Run the development server:
-
-```bash
 python manage.py runserver
 ```
 
-Open the site in a browser:
+Open in browser:
 
-```
 http://127.0.0.1:8000
-```
 
 ---
 
-## Running Unit Tests
+## Testing
 
-Backend functionality is tested using Django’s built-in testing framework.
-
-Run the test suite using:
+Run backend tests:
 
 ```bash
 python manage.py test
 ```
 
-The tests verify core backend components including:
+The test suite verifies:
 
-- Item model behaviour
-- Item view responses
-- Cart functionality
-- Comment system logic
-- Authentication protection
-
-Example test output:
-
-```
-Found 12 tests
-Ran 12 tests
-OK
-```
-
-Django automatically creates a temporary test database and removes it after testing.
+* model behaviour
+* view responses
+* cart functionality
+* comment system
+* authentication protection
 
 ---
 
-## Accessibility
+## Accessibility and Performance
 
-Accessibility was evaluated using Google Lighthouse.
+The system was evaluated using Google Lighthouse.
 
-The application follows accessibility practices such as:
+| Page        | Performance | Accessibility | Best Practices | SEO |
+| ----------- | ----------- | ------------- | -------------- | --- |
+| Homepage    | 100         | 82            | 100            | 82  |
+| Marketplace | 100         | 73            | 100            | 82  |
 
-- semantic HTML structure
-- labelled form fields
-- readable layout and colour contrast
-
-Accessibility scores range between **73 and 82** across tested pages.
+These results demonstrate that UI improvements enhanced usability while maintaining strong technical performance.
 
 ---
 
-## Performance and Sustainability
+## Evaluation Evidence
 
-Performance analysis was conducted using Lighthouse.
+Supporting evaluation materials are included in:
 
-| Page | Performance | Accessibility | Best Practices | SEO |
-|----|----|----|----|----|
-Homepage | 100 | 79–82 | 100 | 82 |
-Marketplace | 100 | 73 | 100 | 82 |
+```
+report-assets/lighthouse/test/
+```
 
-The application achieves strong performance due to lightweight assets and efficient page rendering.
+This folder contains:
+
+* Lighthouse screenshots for multiple pages
+* Item detail performance results
+* Backend unit test evidence
+
+These assets provide verifiable proof of system performance and correctness.
+
+---
+
+## Deployment Notes
+
+The system is fully production-ready:
+
+* Static files served using WhiteNoise
+* Media files hosted via Cloudinary
+* Environment variables used for secure configuration
+* Database automatically configured for local and deployed environments
 
 ---
 
 ## Future Improvements
 
-Potential improvements include:
-
-- payment integration
-- messaging between buyers and sellers
-- advanced search filters
-- recommendation systems
+* Payment integration
+* Messaging system
+* Advanced filtering and sorting
+* Recommendation system
 
 ---
 
@@ -250,9 +242,9 @@ Potential improvements include:
 
 Team DJ
 
-Zhen Liu – 3149144L  
-Zhenyu Wang – 3075222W  
-Tianxin Han – 3047131H  
+Zhen Liu – 3149144L
+Zhenyu Wang – 3075222W
+Tianxin Han – 3047131H
 
-University of Glasgow  
+University of Glasgow
 COMPSCI5012 Internet Technology Coursework
